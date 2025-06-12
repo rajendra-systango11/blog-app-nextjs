@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: {}, // ✅ must be an object
+  },
+  // ✅ Do not include 'matcher' here — it belongs in middleware config
 };
 
 export default nextConfig;

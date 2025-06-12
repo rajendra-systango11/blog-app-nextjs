@@ -1,5 +1,6 @@
 // middleware.ts
 import { getToken } from "next-auth/jwt";
+import withAuth from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -22,7 +23,12 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
+export default withAuth({
+  pages: {
+    signIn: '/login', // Redirect unauthenticated users to this page
+  },
+});
 
-export const config={
-    matcher:['/blog']
-}
+export const config = {
+  matcher: ['/((?!api|_next|static|favicon.ico).*)'], // ✅ matcher goes here
+};
