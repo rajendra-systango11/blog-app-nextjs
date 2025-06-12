@@ -1,4 +1,5 @@
 import { blogPosts } from '@/lib/posts';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
   const newPost = await req.json();
@@ -17,6 +18,9 @@ export async function POST(req: Request) {
   }
 
   blogPosts.push(newPost);
+
+  revalidatePath('/'); // 🔁 revalidate homepage
+  revalidatePath(`/blog/${newPost.slug}`); // 🔁 prefetch new blog route
   return new Response(JSON.stringify({ success: true, post: newPost }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },

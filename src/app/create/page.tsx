@@ -1,12 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { BlogPost } from '@/lib/posts';
+import { useSession } from 'next-auth/react';
+import {  useRouter } from 'next/navigation';
+import { useOptimistic, useState, startTransition, useEffect } from 'react'; // ✅ import startTransition
 
 export default function CreatePostPage() {
+
+const { data: session } = useSession();
+
+
+const router= useRouter();
+
+useEffect(() => {
+  if (!session) {
+    router.push('/login');
+  }
+}, [session]);
+
+    const [_,addOptimisticPost]=useOptimistic<BlogPost[],BlogPost>([],(curr,newP)=>[...curr,newP])
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
-    excerpt: '',
+    excerpt: '',    
     date: '',
   });
 
@@ -25,7 +41,10 @@ export default function CreatePostPage() {
       setStatus('error');
       return;
     }
-
+ // ✅ Wrap optimistic update in a transition
+  startTransition(() => {
+    addOptimisticPost(formData);
+  });
     const res = await fetch('/api/posts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,9 +56,11 @@ export default function CreatePostPage() {
     } else if (res.ok) {
       setStatus('success');
       setFormData({ title: '', slug: '', excerpt: '', date: '' }); // reset form
+      router.push('/');
     } else {
       setStatus('error');
     }
+       // 3. Redirect to homepage or reset
   };
 
   return (
