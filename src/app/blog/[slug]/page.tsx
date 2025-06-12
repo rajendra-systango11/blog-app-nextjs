@@ -13,7 +13,8 @@ export async function generateStaticParams() {
 }
 
 export async  function generateMetadata({ params }: Props) {
-  const res = await fetch(`/api/posts/${params.slug}`);
+  const res = await fetch(`http://localhost:3000/api/posts/${params.slug}`);
+ 
   const post = await res.json();
   if (!post) notFound();
 
@@ -24,7 +25,7 @@ export async  function generateMetadata({ params }: Props) {
 }
 
 export default  async function BlogPostPage({ params }: Props) {
-   const res = await fetch(`/api/posts/${params.slug}`);
+   const res = await fetch(`http://localhost:3000/api/posts/${params.slug}`);
   const post = await res.json();
   if (!post) notFound();
 
