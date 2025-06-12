@@ -1,6 +1,8 @@
+'use client'
 import { blogPosts } from '@/lib/posts';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type Props = {
   params: {
@@ -14,8 +16,31 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function BlogPostPage({ params }: Props) {
+export async function generateMetadata ({params}:Props){
   const post = blogPosts.find((p) => p.slug === params.slug);
+
+  if (!post) {
+    notFound(); // triggers 404 page
+  }
+return {
+    title:post.title,
+    description: post.excerpt
+}
+
+}
+
+export default function BlogPostPage({ params }: Props) {
+    const [post, setPost] = useState([]);
+  
+    useEffect(() => {
+      const fetchPosts = async () => {
+        const res = await fetch(`/api/posts/${params.slug}`);
+        const data = await res.json();
+        console.log(data)
+        setPost(data);
+      };
+      fetchPosts();
+    }, []);
 
   if (!post) {
     notFound(); // triggers 404 page
