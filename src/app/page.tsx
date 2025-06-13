@@ -3,7 +3,7 @@
  
 export default async function Home() {
  
-      const res = (await fetch('http://localhost:3000/api/posts'))
+      const res = (await fetch(`${process.env.BASE_URL}/api/posts`))
       const posts = await res.json();
       if (!posts) {
     return <p className="text-red-500">No posts found</p>;

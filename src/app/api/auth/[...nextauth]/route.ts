@@ -11,8 +11,6 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-    console.log(credentials);
-    
         // 🔐 Dummy user check
         if (
           credentials?.username === "admin" &&

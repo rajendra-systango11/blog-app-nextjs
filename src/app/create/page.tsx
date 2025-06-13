@@ -1,8 +1,7 @@
 "use client";
 
 import { BlogPost } from "@/lib/posts";
-import { uploadImage } from "@/lib/upload";
-import { useRouter } from "next/navigation";
+ import { useRouter } from "next/navigation";
 import { useOptimistic, useState, startTransition } from "react"; // ✅ import startTransition
 
 export default function CreatePostPage() {
@@ -43,11 +42,11 @@ export default function CreatePostPage() {
       setStatus("error");
       return;
     }
-    let imageUrl = "";
-    if (imageFile) {
-      imageUrl = await uploadImage(imageFile);
-    }
-    const postData = { ...formData, imageUrl };
+    // let imageUrl = "";
+    // if (imageFile) {
+    //   imageUrl = await uploadImage(imageFile);
+    // }
+    const postData = { ...formData };
 
     // ✅ Wrap optimistic update in a transition
     startTransition(() => {
