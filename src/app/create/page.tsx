@@ -1,9 +1,8 @@
 'use client';
 
 import { BlogPost } from '@/lib/posts';
-import { useSession } from 'next-auth/react';
-import {  useRouter } from 'next/navigation';
-import { useOptimistic, useState, startTransition, useEffect } from 'react'; // ✅ import startTransition
+ import {  useRouter } from 'next/navigation';
+import { useOptimistic, useState, startTransition } from 'react'; // ✅ import startTransition
 
 export default function CreatePostPage() {
 

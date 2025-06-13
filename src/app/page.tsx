@@ -1,27 +1,21 @@
-'use client'
-import Link from 'next/link';
-import { BlogPost } from '@/lib/posts';
-import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal, useState, useEffect } from 'react';
-
-export default function Home() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await fetch('/api/posts');
-      const data = await res.json();
-      console.log(data)
-      setPosts(data);
-    };
-    fetchPosts();
-  }, []);
-
+ 
+ import Link from 'next/link';
+ 
+export default async function Home() {
+ 
+      const res = (await fetch('http://localhost:3000/api/posts'))
+      const posts = await res.json();
+      if (!posts) {
+    return <p className="text-red-500">No posts found</p>;
+  } 
+      
+     
   return (
     <main className="p-6 max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold mb-4">My Blog</h1>
 
       <ul className="space-y-6">
-        {posts.map((post: { slug: Key | null | undefined; title: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; date: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; excerpt: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+        {posts.map((post) => (
           <li key={post.slug} className="border-b pb-4">
             <h2 className="text-2xl font-semibold text-blue-700">
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
