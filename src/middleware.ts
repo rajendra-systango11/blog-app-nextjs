@@ -1,11 +1,10 @@
 // middleware.ts
 import { getToken } from "next-auth/jwt";
 import withAuth from "next-auth/middleware";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-
+import { NextResponse,NextRequest }    from "next/server";
+ 
 // Define which routes are public
-const PUBLIC_PATHS = ["/", "/login", "/api", "/_next", "/favicon.ico"];
+const PUBLIC_PATHS = ["/login", "/api", "/_next", "/favicon.ico"];
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -14,7 +13,7 @@ export async function middleware(req: NextRequest) {
 
   // Allow public paths
   const isPublic = PUBLIC_PATHS.some((path) => pathname.startsWith(path));
-
+ 
   if (!token && !isPublic) {
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
@@ -28,7 +27,7 @@ export default withAuth({
     signIn: '/login', // Redirect unauthenticated users to this page
   },
 });
-
+// Apply to all routes
 export const config = {
-  matcher: ['/((?!api|_next|static|favicon.ico).*)'], // ✅ matcher goes here
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
 };
