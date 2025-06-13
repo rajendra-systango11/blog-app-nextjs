@@ -1,4 +1,6 @@
+import { db } from '@/lib/firebase';
 import { blogPosts } from '@/lib/posts';
+import { addDoc, collection } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
@@ -16,12 +18,13 @@ export async function POST(req: Request) {
       status: 409,
     });
   }
-
-  blogPosts.push(newPost);
+ 
 
   revalidatePath('/'); // 🔁 revalidate homepage
   revalidatePath(`/blog/${newPost.slug}`); // 🔁 prefetch new blog route
-  return new Response(JSON.stringify({ success: true, post: newPost }), {
+     await addDoc(collection(db, "posts"), newPost);
+     
+   return new Response(JSON.stringify({ success: true, post: newPost }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });

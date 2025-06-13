@@ -7,17 +7,8 @@ import { useOptimistic, useState, startTransition, useEffect } from 'react'; // 
 
 export default function CreatePostPage() {
 
-const { data: session } = useSession();
-
-
-const router= useRouter();
-
-useEffect(() => {
-  if (!session) {
-    router.push('/login');
-  }
-}, [session]);
-
+ 
+const router = useRouter();
     const [_,addOptimisticPost]=useOptimistic<BlogPost[],BlogPost>([],(curr,newP)=>[...curr,newP])
   const [formData, setFormData] = useState({
     title: '',
