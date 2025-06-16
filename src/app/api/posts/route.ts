@@ -35,7 +35,7 @@ export async function GET() {
     const posts = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
-    })); 
+    }));      
   return new Response(JSON.stringify(posts) , {
     status: 200,
     headers: { 'Content-Type': 'application/json' },

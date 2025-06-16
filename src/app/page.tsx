@@ -1,5 +1,6 @@
  
- import Link from 'next/link';
+ import { BlogPost } from '@/lib/posts';
+import Link from 'next/link';
  
 export default async function Home() {
  
@@ -15,7 +16,7 @@ export default async function Home() {
       <h1 className="text-4xl font-bold mb-4">My Blog</h1>
 
       <ul className="space-y-6">
-        {posts.map((post) => (
+        {posts.map((post:BlogPost) => (
           <li key={post.slug} className="border-b pb-4">
             <h2 className="text-2xl font-semibold text-blue-700">
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>

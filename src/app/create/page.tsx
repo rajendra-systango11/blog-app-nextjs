@@ -46,6 +46,8 @@ export default function CreatePostPage() {
     // if (imageFile) {
     //   imageUrl = await uploadImage(imageFile);
     // }
+    console.log(imageFile);
+    
     const postData = { ...formData };
 
     // ✅ Wrap optimistic update in a transition
