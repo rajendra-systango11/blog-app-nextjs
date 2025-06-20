@@ -4,9 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 type Props = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
@@ -14,7 +12,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.slug}`);
+ const {slug}= await params; // Ensure params is resolved
+  const res = await fetch(`${process.env.BASE_URL}/api/posts/${slug}`);
 
   const post = await res.json();
   if (!post) notFound();
@@ -26,7 +25,9 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const res = await fetch(`${process.env.BASE_URL}/api/posts/${params.slug}`);
+ const {slug}= await params; // Ensure params is resolved
+
+  const res = await fetch(`${process.env.BASE_URL}/api/posts/${slug}`);
   const post = await res.json();
   if (!post) notFound();
 

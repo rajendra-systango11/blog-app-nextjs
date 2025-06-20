@@ -1,11 +1,20 @@
-// app/api/posts/[slug]/route.ts
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(_: Request, { params }: { params: { slug: string } }) {
-  try {
-    const q = query(collection(db, 'posts'), where('slug', '==', params.slug));
+export async function GET(
+  _: NextRequest,
+  {
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}
+
+) {
+     const { slug } = await params;
+
+    try {
+    const q = query(collection(db, 'posts'), where('slug', '==', slug));
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
@@ -16,6 +25,6 @@ export async function GET(_: Request, { params }: { params: { slug: string } }) 
 
     return NextResponse.json(post);
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
