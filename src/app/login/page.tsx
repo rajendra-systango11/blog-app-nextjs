@@ -1,26 +1,34 @@
-'use client';
+"use client";
 
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+  const [form, setForm] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
 
-  const handleChange = (e: any) =>
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await signIn('credentials', {
+
+    const res = await signIn("credentials", {
       ...form,
       redirect: false,
     });
 
-    if (res?.error) setError('Invalid credentials');
-    else router.push('/');
+    if (res?.ok) {
+      console.log("Login successful");
+       setTimeout(() => {
+    router.push('/');
+  }, 300); // 300ms delay
+    } else {
+      setError("Invalid credentials");
+    }
   };
 
   return (
@@ -43,7 +51,9 @@ export default function LoginPage() {
           className="w-full border p-2 rounded"
         />
         {error && <p className="text-red-600">{error}</p>}
-        <button className="bg-blue-600 text-white p-2 rounded w-full">Login</button>
+        <button className="bg-blue-600 text-white p-2 rounded w-full">
+          Login
+        </button>
       </form>
     </main>
   );

@@ -6,10 +6,12 @@ import { useOptimistic, useState, startTransition } from "react"; // ✅ import 
 
 export default function CreatePostPage() {
   const router = useRouter();
-  const [_, addOptimisticPost] = useOptimistic<BlogPost[], BlogPost>(
+  const [optimisticPost, addOptimisticPost] = useOptimistic<BlogPost[], BlogPost>(
     [],
     (curr, newP) => [...curr, newP]
   );
+  console.log("addOptimisticPost", optimisticPost);
+  
   const [formData, setFormData] = useState({
     title: "",
     slug: "",

@@ -12,7 +12,9 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Allow public paths
-  const isPublic = PUBLIC_PATHS.some((path) => pathname.startsWith(path));
+ const isPublic = PUBLIC_PATHS.some((path) => pathname === path );
+
+ console.log(token, isPublic, pathname);
  
   if (!token && !isPublic) {
     const loginUrl = new URL("/login", req.url);
@@ -29,5 +31,5 @@ export default withAuth({
 });
 // Apply to all routes
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|login).*)"],
 };
