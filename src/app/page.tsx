@@ -4,7 +4,7 @@ import Link from 'next/link';
  
 export default async function Home() {
  
-      const res = (await fetch(`${process.env.BASE_URL}/api/posts`))
+      const res = (await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`))
       const posts = await res.json();
       if (!posts) {
     return <p className="text-red-500">No posts found</p>;
